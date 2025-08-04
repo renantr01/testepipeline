@@ -1,4 +1,4 @@
-name: Deploy PHPiPAM Docker
+name: Deploy with Docker Compose - Advanced
 
 on:
   push:
@@ -23,12 +23,9 @@ jobs:
           ssh-private-key: ${{ secrets.SERVER_PRIVATE_SSH_KEY }}
 
       - name: Add Server to Known Hosts
-        env:
-          SERVER_IP: ${{ secrets.SERVER_IP }}
-          SERVER_PORT: ${{ secrets.SERVER_PORT }}
         run: |
           mkdir -p ~/.ssh
-          ssh-keyscan -p ${SERVER_PORT} ${SERVER_IP} >> ~/.ssh/known_hosts
+          ssh-keyscan -p ${{ secrets.SERVER_PORT }} ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
       - name: Deploy to Remote Server
         env:
@@ -110,12 +107,6 @@ jobs:
             
             echo "=== [$(date)] Deploy concluído com sucesso ==="
           EOF
-
-      - name: Health Check (Opcional)
-        run: |
-          # Exemplo de health check - ajuste conforme sua aplicação
-          echo "=== Verificando saúde da aplicação ==="
-          # curl -f http://${{ secrets.SERVER_IP }}:PORT/health || echo "Health check falhou"
 
       - name: Notify Success
         if: success()
