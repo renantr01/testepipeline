@@ -30,6 +30,8 @@ jobs:
       - name: Deploy to Remote Server
         env:
           MYSQL_ROOT_PASSWORD: ${{ secrets.MYSQL_ROOT_PASSWORD }}
+          PHPIPAM_USER: ${{ secrets.PHPIPAM_USER }}
+          PHPIPAM_PASSWORD: ${{ secrets.PHPIPAM_PASSWORD }}
         run: |
           ssh -p ${{ secrets.SERVER_PORT }} ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << EOF
             set -e  # Parar em caso de erro
