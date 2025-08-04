@@ -1,4 +1,4 @@
-name: Deploy with Docker Compose - Advanced
+name: Deploy com PHPiPAM - Docker
 
 on:
   push:
