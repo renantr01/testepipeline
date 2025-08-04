@@ -1,0 +1,9 @@
+version: '3'
+include:
+  - services/phpipam.yml
+  - services/mysql.yml
+networks:
+  docker-network:
+    name: docker-network
+    driver_opts:
+      com.docker.network.bridge.name: "docker-network"

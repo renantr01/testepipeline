@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  phpipam-web:
+    image: phpipam/phpipam-www:latest
+    container_name: phpipam-web
+    ports:
+      - "80:80"
+    environment:
+      - TZ=America/Sao_Paulo
+      - IPAM_DATABASE_HOST=mysql
+      - IPAM_DATABASE_USER=${PHPIPAM_USER}
+      - IPAM_DATABASE_PASS=${PHPIPAM_PASSWORD}
+      - IPAM_DATABASE_WEBHOST=%
+    restart: unless-stopped
+    volumes:
+      - ../volumes/phpipam-logo:/phpipam/css/images/logo
+      - ../volumes/phpipam-ca:/usr/local/share/ca-certificates:ro
+    depends_on:
+      - mysql
+    networks:
+      - docker-network
+
+  phpipam-cron:
+    image: phpipam/phpipam-cron:latest
+    container_name: phpipam-cron
+    environment:
+      - TZ=America/Sao_Paulo
+      - IPAM_DATABASE_HOST=mysql
+      - IPAM_DATABASE_USER=${PHPIPAM_USER}
+      - IPAM_DATABASE_PASS=${PHPIPAM_PASSWORD}
+      - SCAN_INTERVAL=1h
+      - IPAM_DISABLE_INSTALLER=1
+    restart: unless-stopped
+    volumes:
+      - ../volumes/phpipam-ca:/usr/local/share/ca-certificates:ro
+    depends_on:
+      - mysql
+    networks:
+      - docker-network
+
